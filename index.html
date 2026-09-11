@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Para Mel</title>
+    <meta
+      name="description"
+      content="Una pequeña invitación especial para Mel."
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23f43f5e'/%3E%3Cpath d='M32 50s-18-10.6-18-24.1C14 18.8 18.8 14 25 14c3.7 0 6 1.7 7 3.2 1-1.5 3.3-3.2 7-3.2 6.2 0 11 4.8 11 11.9C50 39.4 32 50 32 50z' fill='white'/%3E%3C/svg%3E"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #3b1020;
+        --muted: #7b4154;
+        --rose: #f43f5e;
+        --rose-dark: #be123c;
+        --cream: #fff7ed;
+        --paper: rgba(255, 255, 255, 0.82);
+        --line: rgba(190, 18, 60, 0.16);
+        --shadow: 0 24px 80px rgba(136, 19, 55, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 20% 18%, rgba(244, 63, 94, 0.25), transparent 26rem),
+          radial-gradient(circle at 88% 18%, rgba(251, 146, 60, 0.2), transparent 22rem),
+          linear-gradient(135deg, #fff7ed 0%, #ffe4e6 52%, #fdf2f8 100%);
+        overflow-x: hidden;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .hearts {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .heart {
+        position: absolute;
+        bottom: -4rem;
+        color: rgba(244, 63, 94, 0.28);
+        font-size: clamp(1.4rem, 2vw, 2.4rem);
+        animation: floatUp var(--time) linear infinite;
+        left: var(--left);
+      }
+
+      @keyframes floatUp {
+        from {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0;
+        }
+        14% {
+          opacity: 1;
+        }
+        to {
+          transform: translateY(-118vh) rotate(26deg);
+          opacity: 0;
+        }
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 1.2rem;
+      }
+
+      .screen {
+        width: min(100%, 760px);
+        min-height: min(720px, calc(100vh - 2.4rem));
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .screen.active {
+        display: flex;
+      }
+
+      .panel {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+        padding: clamp(1.35rem, 4vw, 3.5rem);
+        text-align: center;
+      }
+
+      .kicker {
+        margin: 0 0 0.9rem;
+        color: var(--rose-dark);
+        font-size: 0.95rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(3.1rem, 12vw, 7rem);
+      }
+
+      h2 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2.4rem, 8vw, 4.6rem);
+      }
+
+      .lead {
+        max-width: 38rem;
+        margin: 1.2rem auto 0;
+        color: var(--muted);
+        font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+        line-height: 1.6;
+      }
+
+      .actions {
+        position: relative;
+        min-height: 9rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2.1rem;
+      }
+
+      .btn {
+        min-width: 9rem;
+        border: 0;
+        border-radius: 999px;
+        padding: 1rem 1.45rem;
+        cursor: pointer;
+        font-weight: 850;
+        color: white;
+        background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+        box-shadow: 0 14px 32px rgba(190, 18, 60, 0.28);
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          left 220ms ease,
+          top 220ms ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 44px rgba(190, 18, 60, 0.34);
+      }
+
+      .btn.secondary {
+        color: var(--rose-dark);
+        background: #fff;
+        box-shadow: 0 14px 30px rgba(136, 19, 55, 0.12);
+      }
+
+      #noButton {
+        position: relative;
+      }
+
+      .microcopy {
+        min-height: 1.6rem;
+        margin: 0;
+        color: var(--rose-dark);
+        font-weight: 700;
+      }
+
+      form {
+        display: grid;
+        gap: 1rem;
+        margin-top: 1.8rem;
+        text-align: left;
+      }
+
+      label {
+        display: grid;
+        gap: 0.45rem;
+        color: var(--ink);
+        font-size: 0.95rem;
+        font-weight: 750;
+      }
+
+      select,
+      input,
+      textarea {
+        width: 100%;
+        border: 1px solid rgba(190, 18, 60, 0.18);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.76);
+        color: var(--ink);
+        padding: 0.9rem 1rem;
+        outline: none;
+      }
+
+      textarea {
+        min-height: 6.4rem;
+        resize: vertical;
+      }
+
+      select:focus,
+      input:focus,
+      textarea:focus {
+        border-color: rgba(244, 63, 94, 0.65);
+        box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .status {
+        min-height: 1.4rem;
+        margin: 0.2rem 0 0;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .sparkle {
+        display: inline-block;
+        animation: pulse 1.7s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        50% {
+          transform: scale(1.12) rotate(-4deg);
+        }
+      }
+
+      @media (max-width: 620px) {
+        .panel {
+          border-radius: 22px;
+        }
+
+        .actions {
+          min-height: 11rem;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hearts" aria-hidden="true">
+      <span class="heart" style="--left: 8%; --time: 12s">♥</span>
+      <span class="heart" style="--left: 22%; --time: 16s">♥</span>
+      <span class="heart" style="--left: 42%; --time: 13s">♥</span>
+      <span class="heart" style="--left: 67%; --time: 15s">♥</span>
+      <span class="heart" style="--left: 84%; --time: 11s">♥</span>
+    </div>
+
+    <main>
+      <section class="screen active" id="askScreen" aria-labelledby="askTitle">
+        <div class="panel">
+          <p class="kicker">Una pregunta importante</p>
+          <h1 id="askTitle">Mel</h1>
+          <p class="lead">
+            estuve pensando que hay invitaciones que merecen algo más lindo que
+            un simple mensaje. Entonces hice esta para preguntarte algo:
+          </p>
+          <p class="lead"><strong>¿Querés salir conmigo?</strong></p>
+
+          <div class="actions" id="actions">
+            <button class="btn" id="yesButton" type="button">Sí, obvio</button>
+            <button class="btn secondary" id="noButton" type="button">No</button>
+          </div>
+          <p class="microcopy" id="microcopy" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section class="screen" id="planScreen" aria-labelledby="planTitle">
+        <div class="panel">
+          <p class="kicker">Sabía que ibas a elegir bien</p>
+          <h2 id="planTitle">Ahora elegí el plan <span class="sparkle">♥</span></h2>
+          <p class="lead">
+            Dejame tus preferencias y prometo encargarme del resto.
+          </p>
+
+          <form id="dateForm">
+            <input type="hidden" name="respuesta" value="Mel dijo que sí" />
+
+            <label>
+              Plan
+              <select name="plan" required>
+                <option value="">Elegí uno</option>
+                <option>Café y algo dulce</option>
+                <option>Cena</option>
+                <option>Helado y paseo</option>
+                <option>Cine</option>
+                <option>Sorpresa, confiando en vos</option>
+              </select>
+            </label>
+
+            <div class="grid">
+              <label>
+                Fecha
+                <input name="fecha" type="date" required />
+              </label>
+
+              <label>
+                Horario
+                <input name="horario" type="time" required />
+              </label>
+            </div>
+
+            <label>
+              Algo que te gustaría sumar
+              <textarea
+                name="mensaje"
+                placeholder="Una idea, una condición, un antojo..."
+              ></textarea>
+            </label>
+
+            <button class="btn" type="submit">Enviar mi elección</button>
+            <p class="status" id="formStatus" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="screen" id="thanksScreen" aria-labelledby="thanksTitle">
+        <div class="panel">
+          <p class="kicker">Respuesta recibida</p>
+          <h2 id="thanksTitle">Listo, Mel</h2>
+          <p class="lead">
+            Ya quedó anotado. Ahora me toca a mí preparar algo lindo.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const FORM_ENDPOINT = "";
+
+      const askScreen = document.querySelector("#askScreen");
+      const planScreen = document.querySelector("#planScreen");
+      const thanksScreen = document.querySelector("#thanksScreen");
+      const yesButton = document.querySelector("#yesButton");
+      const noButton = document.querySelector("#noButton");
+      const actions = document.querySelector("#actions");
+      const microcopy = document.querySelector("#microcopy");
+      const dateForm = document.querySelector("#dateForm");
+      const formStatus = document.querySelector("#formStatus");
+
+      const playfulLines = [
+        "Ese botón está medio tímido.",
+        "Mmm... parece que no quiere quedarse quieto.",
+        "Creo que la página tiene una opinión.",
+        "Capaz el botón de al lado es más confiable.",
+        "Última oportunidad de elegir con el corazón.",
+      ];
+
+      let attempts = 0;
+
+      function showScreen(screen) {
+        [askScreen, planScreen, thanksScreen].forEach((item) => {
+          item.classList.toggle("active", item === screen);
+        });
+      }
+
+      function moveNoButton() {
+        attempts += 1;
+        const area = actions.getBoundingClientRect();
+        const button = noButton.getBoundingClientRect();
+        const maxX = Math.max(area.width - button.width, 0);
+        const maxY = Math.max(area.height - button.height, 0);
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+
+        noButton.style.position = "absolute";
+        noButton.style.left = `${x}px`;
+        noButton.style.top = `${y}px`;
+        microcopy.textContent = playfulLines[(attempts - 1) % playfulLines.length];
+      }
+
+      yesButton.addEventListener("click", () => showScreen(planScreen));
+      noButton.addEventListener("mouseenter", moveNoButton);
+      noButton.addEventListener("focus", moveNoButton);
+      noButton.addEventListener("click", moveNoButton);
+      noButton.addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        moveNoButton();
+      });
+
+      dateForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!FORM_ENDPOINT) {
+          const data = new FormData(dateForm);
+          const subject = encodeURIComponent("Mel eligió el plan");
+          const body = encodeURIComponent(
+            `Respuesta: ${data.get("respuesta")}\nPlan: ${data.get("plan")}\nFecha: ${data.get("fecha")}\nHorario: ${data.get("horario")}\nMensaje: ${data.get("mensaje") || "-"}`
+          );
+          window.location.href = `mailto:facucajal9@gmail.com?subject=${subject}&body=${body}`;
+          showScreen(thanksScreen);
+          return;
+        }
+
+        formStatus.textContent = "Enviando...";
+
+        try {
+          const response = await fetch(FORM_ENDPOINT, {
+            method: "POST",
+            body: new FormData(dateForm),
+            headers: { Accept: "application/json" },
+          });
+
+          if (!response.ok) {
+            throw new Error("No se pudo enviar el formulario");
+          }
+
+          showScreen(thanksScreen);
+        } catch (error) {
+          formStatus.textContent =
+            "No pude enviar la elección. Probá de nuevo en un ratito.";
+        }
+      });
+    </script>
+  </body>
+</html>
