@@ -17,21 +17,12 @@ La URL debería quedar así:
 https://facucajal.github.io/para-Mel/
 ```
 
-## Cómo conectar el email
+## Email automático
 
-La web ya tiene dos caminos:
+El formulario ya está conectado a Formspree:
 
-- Si no configurás nada, al enviar el formulario abre un email listo con `mailto`.
-- Para recibir el envío automáticamente sin que Mel tenga que mandar un email manual, creá un formulario en Formspree y reemplazá esta línea en `index.html`:
-
-```js
-const FORM_ENDPOINT = "";
-```
-
-por tu endpoint de Formspree:
-
-```js
-const FORM_ENDPOINT = "https://formspree.io/f/tu_codigo";
+```text
+https://formspree.io/f/mvkoynjj
 ```
 
 El fallback con `mailto` ya está configurado para `facucajal9@gmail.com`.
